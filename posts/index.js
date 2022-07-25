@@ -14,7 +14,7 @@ app.get("/posts", (req, res) => {
   res.send(posts);
 });
 
-app.post("/posts", (req, res) => {
+app.post("/posts", async (req, res) => {
   const id = randomBytes(4).toString("hex");
   const { title } = req.body;
 
@@ -22,12 +22,17 @@ app.post("/posts", (req, res) => {
 
   //create an event, to be passed to the event-bus
   //The schema of the body of this data object can be a flexible format.
-  axios.post("http://localhost:4005/events", {
+  await axios.post("http://localhost:4005/events", {
     type: "PostCreated",
     data: { id, title },
   });
 
   res.status(201).send(posts[id]);
+});
+
+app.post("/events", (req, res) => {
+  console.log("Event received: ", req.body.type);
+  res.send({});
 });
 
 app.listen(4000, () => {

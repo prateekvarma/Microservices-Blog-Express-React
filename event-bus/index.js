@@ -21,7 +21,7 @@ app.post("/events", (req, res) => {
     console.log(error.message);
   }); //Query service
 
-  res.send({ status: ok });
+  res.send({ status: "ok" });
 });
 
 app.listen(4005, () => {
