@@ -12,13 +12,13 @@ app.post("/events", (req, res) => {
 
   //Forward event calls to all sub services
   axios.post("http://localhost:4000/events", event).catch((error) => {
-    console.log(error.message);
+    console.log("4000 error: ", error.message);
   }); //posts service
   axios.post("http://localhost:4001/events", event).catch((error) => {
-    console.log(error.message);
+    console.log("4001 error: ", error.message);
   }); //comments service
   axios.post("http://localhost:4002/events", event).catch((error) => {
-    console.log(error.message);
+    console.log("4002 error: ", error.message);
   }); //Query service
 
   res.send({ status: "ok" });
