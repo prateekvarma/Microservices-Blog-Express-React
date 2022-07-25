@@ -8,6 +8,7 @@
 # Microservices
 /comments/node_modules
 /posts/node_modules
+/event-bus/node_modules
 
 # testing
 /client/coverage
