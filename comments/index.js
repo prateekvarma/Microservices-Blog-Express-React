@@ -36,8 +36,29 @@ app.post("/posts/:id/comments", async (req, res) => {
   res.status(201).send(comments);
 });
 
-app.post("/events", (req, res) => {
+app.post("/events", async (req, res) => {
   console.log("Event received: ", req.body.type);
+
+  const { type, data } = req.body;
+
+  // if the comment has already been checked from the moderation service
+  if (type === "CommentModerated") {
+    const { postId, id, status, content } = data;
+    const comments = commentsByPostId[postId]; // this is array of comments associated with that particular post, or postId.
+    const comment = comments.find((comment) => comment.id === id); //find the comment that needs to be updated
+    comment.status = status; //Finally, update the status of the comment, so that the query service is ready to emit data to any service that needs it.
+
+    //At last, emit an event to the event-bus
+    await axios.post("http://localhost:4005/events", {
+      type: "CommentUpdated",
+      data: {
+        id,
+        postId,
+        content,
+        status
+      }
+    })
+  }
 
   res.send({});
 });
