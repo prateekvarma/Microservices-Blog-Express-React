@@ -19,7 +19,7 @@ app.post("/posts/:id/comments", async (req, res) => {
   const { content } = req.body;
 
   const comments = commentsByPostId[req.params.id] || []; //checks if any comments were aready present, associoated with this id. Else assign an empty array.
-  comments.push({ id: commentId, content }); //inserts object into comments variable
+  comments.push({ id: commentId, content, status: "pending" }); //inserts object into comments variable
   commentsByPostId[req.params.id] = comments; // inserts a new comment object inside commentsByPostId as an array
 
   //Emit events to event-bus
@@ -29,6 +29,7 @@ app.post("/posts/:id/comments", async (req, res) => {
       id: commentId,
       content: content,
       postId: req.params.id,
+      status: "pending",
     },
   });
 

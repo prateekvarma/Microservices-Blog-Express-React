@@ -23,12 +23,12 @@ app.post("/events", (req, res) => {
   }
 
   if (type === "CommentCreated") {
-    const { id, content, postId } = data;
+    const { id, content, postId, status } = data;
 
     //find the particular post
     const post = posts[postId];
     //then push the object in the post array
-    post.comments.push({ id, content });
+    post.comments.push({ id, content, status });
   }
 
   console.log("Console of posts: ", posts);
