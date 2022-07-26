@@ -31,6 +31,17 @@ app.post("/events", (req, res) => {
     post.comments.push({ id, content, status });
   }
 
+  if (type === "CommentUpdated") {
+    //this starts from the comment service through the EventBus
+    const { id, content, postId, status } = data;
+
+    const post = posts[postId]; //search for the particular post
+    const comment = post.comments.find((comment) => comment.id === id); //find the particular comment
+
+    comment.status = status; //update the comment's status with thte new status
+    comment.content = content; //update content too just in case it's updated too.
+  }
+
   console.log("Console of posts: ", posts);
 
   res.send({});
